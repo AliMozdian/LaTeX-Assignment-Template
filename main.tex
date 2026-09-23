@@ -1,0 +1,171 @@
+% !TEX program = xelatex
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[a4paper,margin=2.2cm]{geometry}
+\usepackage{setspace}
+\setstretch{1.18}
+
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, urlcolor=blue, linkcolor=blue]{hyperref}
+
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{tabularx}
+
+\usepackage[most]{tcolorbox}
+\usepackage{xepersian}
+
+\usepackage{tikz}
+\usetikzlibrary{automata, positioning}
+
+% ----------------
+\usepackage[inline]{enumitem}
+
+
+\usepackage{tikz}
+\usetikzlibrary{automata, positioning}
+
+% ----------------
+
+% --- Persian font: load from local files in project root ---
+\settextfont[
+  Path=./,
+  UprightFont = vazirmatn-regular.ttf,
+  BoldFont    = vazirmatn-bold.ttf
+]{Vazirmatn}
+
+% Latin font for English text
+\setlatintextfont{Times New Roman}
+
+
+\newcommand{\coursename}{نظریهٔ زبان‌ها و ماشین‌ها}
+\newcommand{\assignTitle}{تمرین سری دوم}
+\newcommand{\term}{نیم‌سال: بهار ۱۴۰۵}
+
+\newcommand{\instructors}{دکتر انتظاری ملکی و دکتر غیور باغبانی}
+\newcommand{\designers}{علی مزدیان فرد}
+\newcommand{\requiredslides}{\lr{chp3\_1 \quad\textbullet\quad chp3\_2 \quad\textbullet\quad chp4\_1 \quad\textbullet\quad chp4\_2}}
+
+\newcommand{\releasedate}{تاریخ انتشار: ۱۴۰۵/۰۱/۱۰}
+\newcommand{\duedate}{تاریخ تحویل: ۱۴۰۵/۰۱/۲۴}
+
+% ===== Page Frame (every page) =====
+\definecolor{FrameGray}{gray}{0.25}
+\definecolor{FrameLight}{gray}{0.86}
+\definecolor{AccentA}{RGB}{20,70,140}
+
+\newlength{\FrameInset}
+\setlength{\FrameInset}{1.1cm}
+
+\AddToHook{shipout/background}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    % Outer rounded rectangle
+    \draw[line width=0.95pt, rounded corners=9pt, color=FrameGray]
+      ($(current page.south west)+(\FrameInset,\FrameInset)$)
+      rectangle
+      ($(current page.north east)+(-\FrameInset,-\FrameInset)$);
+
+    % Inner subtle rectangle
+    \draw[line width=0.35pt, rounded corners=8pt, color=FrameLight]
+      ($(current page.south west)+(\FrameInset+2.5mm,\FrameInset+2.5mm)$)
+      rectangle
+      ($(current page.north east)+(-\FrameInset-2.5mm,-\FrameInset-2.5mm)$);
+
+    % Top accent line
+    \draw[line width=0.55pt, color=AccentA]
+      ($(current page.north west)+(\FrameInset+7mm,-\FrameInset-7mm)$) --
+      ($(current page.north east)+(-\FrameInset-7mm,-\FrameInset-7mm)$);
+
+    % Bottom accent line (closes the page visually)
+    \draw[line width=0.45pt, color=AccentA!70]
+      ($(current page.south west)+(\FrameInset+7mm,\FrameInset+7mm)$) --
+      ($(current page.south east)+(-\FrameInset-7mm,\FrameInset+7mm)$);
+  \end{tikzpicture}%
+}
+
+% ===== Cover UI (cards) =====
+\definecolor{CardBorder}{gray}{0.80}
+\definecolor{CardTitle}{gray}{0.15}
+
+\tcbset{
+  card/.style={
+    enhanced,
+    colback=white,
+    colframe=CardBorder,
+    boxrule=0.5pt,
+    arc=2.5mm,
+    left=10pt,right=10pt,top=10pt,bottom=10pt
+  }
+}
+
+\newcommand{\coverpage}{
+\vspace*{0.005\textheight}
+
+\begin{center}
+\includegraphics[width=3.7cm]{iust-logo.png}
+
+\vspace{5pt}
+
+{\LARGE \textbf{\coursename}}\\[6pt]
+{\Large \textbf{\assignTitle}}\\[4pt]
+{\normalsize \term}\\[8pt]
+{\small \releasedate \quad\textbullet\quad \duedate}
+
+\vspace{5pt}
+{\color{CardBorder}\rule{0.72\textwidth}{0.5pt}}
+\end{center}
+
+\vspace{3pt}
+
+% --- Metadata card (aligned RTL grid) ---
+\begin{tcolorbox}[card]
+\small
+\setlength{\tabcolsep}{0pt}
+\begin{tabularx}{\textwidth}{@{}>{\raggedleft\arraybackslash}p{3.2cm}@{\hspace{10pt}}X@{}}
+\textcolor{CardTitle}{\textbf{نام اساتید:}} & \instructors \\[8pt]
+\textcolor{CardTitle}{\textbf{نام طراحان:}} & \designers \\[8pt]
+\textcolor{CardTitle}{\textbf{اسلایدهای لازم:}} & \requiredslides
+\end{tabularx}
+\end{tcolorbox}
+
+%\vspace{2pt}
+
+% --- Policy card (compact) ---
+\begin{tcolorbox}[card]
+\small
+\textcolor{CardTitle}{\textbf{شیوه‌نامهٔ تمرین:}}
+\vspace{4pt}
+\begin{itemize}
+  \item نمره‌ی کل این تمرین ۱۰۰ است و بارم هر سؤال روبه‌روی آن نوشته شده است.
+
+  \item فایل پاسخ خود را به صورت \lr{Hw2\_StudentID\_StudentName.pdf} نام‌گذاری کرده و تنها در سامانه‌ی \href{https://quera.org/course/assignments/99805/problems}{کوئرا} ارسال کنید.
+
+  \item اگر برای پاسخ به سؤالی نیاز به پیش‌فرض دارید، فرض خود را شفاف و دقیق بنویسید و پاسخ را بر اساس همان ارائه دهید. اگر درباره‌ی صحت فرض مردد هستید، می‌توانید از طراحان سؤال بپرسید. فرض‌هایی که عمداً سؤال را خیلی آسان کنند، نمره‌ای ندارند.
+
+  \item کپی‌برداری از دیگران \textcolor{red}{ممنوع} است. در صورت مشاهده‌ی تشابه غیرعادی، نمره‌ی آن سؤال \textcolor{red}{\underline{صفر}} می‌شود؛ و اگر در چند سؤال تکرار شود، نمره‌ی کل تمرین برای همه‌ی افراد درگیر صفر در نظر گرفته می‌شود. برای جلوگیری از این موضوع در صورت همفکری با دوستانتان درباره سوالی، این موضوع را ذکر کنید.
+
+  \item اگر از هوش مصنوعی استفاده می‌کنید، نحوه‌ی استفاده را بنویسید و اسکرین‌شات کامل چت و پرامپت‌ها را ارسال کنید. استفاده از هوش مصنوعی نباید برای دریافت مستقیم پاسخ یا کپی‌کردن باشد.
+
+  \item برای هر سری تمرین می‌توانید تا ۵ روز از تاخیر مجاز استفاده کنید و در مجموع ۱۵ روز تاخیر مجاز (بدون کسر نمره) خواهید داشت.
+\end{itemize}
+\end{tcolorbox}
+
+\vspace*{2mm}
+}
+
+\setlength{\footskip}{24pt}   % default ~30pt varies; this lifts footer content upward
+
+\begin{document}
+
+% ---------- Page 1 ----------
+\coverpage
+\clearpage
+
+% Page 2 questions...
+% ---------- Page 2 ----------
+
+\input{questions}
+
+\end{document}
